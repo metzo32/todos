@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, FlatList, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  Button,
+  Pressable,
+} from "react-native";
 import { TailwindProvider } from "tailwindcss-react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,11 +18,15 @@ export default function App() {
   const Stack = createStackNavigator();
 
   const [courseGoals, setCourseGoals] = useState<any[]>([]);
-  const [modalIsVisible, setModalIsVisible] = useState(false)
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const startAddGoalHandler = () => {
-    setModalIsVisible(true)
-  }
+    setModalIsVisible(true);
+  };
+
+  const endAddGoalHandler = () => {
+    setModalIsVisible(false);
+  };
 
   // 함수 자체를 props로 넘겨줌
   const addGoalHandler = (enteredGoalText: string) => {
@@ -24,6 +35,7 @@ export default function App() {
       ...currentGoals,
       { text: enteredGoalText, id: Math.random().toString() },
     ]);
+    endAddGoalHandler(); //목록을 추가하면 모달이 닫힘
   };
 
   const deleteGoalHandler = (id: string) => {
@@ -33,9 +45,20 @@ export default function App() {
   };
 
   return (
+    <>
+    <StatusBar style="light"/>
     <View style={styles.appContainer}>
-      <Button title="Add a new goal" color="pink" onPress={startAddGoalHandler}/>
-      {modalIsVisible && <GoalInput visible={modalIsVisible} onAddGoal={addGoalHandler} />}
+      <Pressable style={styles.button} onPress={startAddGoalHandler}>
+        <Text style={styles.buttonText}>Add a new goal</Text>
+      </Pressable>
+
+      {modalIsVisible && (
+        <GoalInput
+          visible={modalIsVisible}
+          onAddGoal={addGoalHandler}
+          onCancel={endAddGoalHandler}
+        />
+      )}
 
       <View style={styles.goalsContainer}>
         <FlatList
@@ -56,26 +79,34 @@ export default function App() {
         />
       </View>
     </View>
-
-    // <TailwindProvider>
-    //   <NavigationContainer>
-    //     <Stack.Navigator>
-    //       <Stack.Screen name="Home" component={Test} />
-    //       <Stack.Screen name="Details" component={Test} />
-    //     </Stack.Navigator>
-    //   </NavigationContainer>
-    // </TailwindProvider>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 50,
+    alignItems: "stretch",
+    paddingTop: 60,
     paddingHorizontal: 16,
+    backgroundColor: "#bfe0e2",
   },
 
   goalsContainer: {
     flex: 5,
+  },
+
+  button: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: "#ffffff",
+    borderRadius: 100,
+  },
+
+  buttonText: {
+    color: "#fff",
   },
 });

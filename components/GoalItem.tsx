@@ -13,15 +13,14 @@ export default function GoalItem(props: typeOfProps) {
 
   return (
     <View style={styles.goalItem}>
-    <Pressable
-      onPress={handleItemPress}
-      android_ripple={{ color: "#000" }}
-      style={({ pressed }) => pressed && styles.pressedItem}
-    >
-
+      <Pressable
+        onPress={handleItemPress}
+        android_ripple={{ color: "#000" }}
+        style={({ pressed }) => pressed && styles.pressedItem}
+      >
         <Text style={styles.goalText}>{props.text}</Text>
-    </Pressable>
-      </View>
+      </Pressable>
+    </View>
   );
 }
 
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: "pink",
+    backgroundColor: "#438e96",
   },
 
   goalText: {

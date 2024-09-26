@@ -1,9 +1,19 @@
 import { useState } from "react";
-import { StyleSheet, View, TextInput, Button, Modal } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Button,
+  Pressable,
+  Modal,
+  Image,
+} from "react-native";
 
 interface goalProps {
   onAddGoal: (enteredGoalText: string) => void;
   visible: boolean;
+  onCancel: () => void;
 }
 
 const GoalInput = (props: goalProps) => {
@@ -21,21 +31,27 @@ const GoalInput = (props: goalProps) => {
   return (
     <Modal visible={props.visible} animationType="slide">
       <View style={styles.inputContainer}>
+        <Image
+          source={require("../assets/images/goal.png")}
+          style={styles.image}
+        />
+        {/* <Image source={goalImage} /> */}
+
         <TextInput
           style={styles.textInput}
           placeholder="Your Goal"
           onChangeText={goalInputHandler}
           value={enteredGoalText}
         />
+
         <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Button title="Add Goal" onPress={addGoalHandler} />
-            {/* <Button title="Add Goal" onPress={() => props.onAddGoal(enteredGoalText)} /> */}
-            {/* 화살표 함수를 쓰지 않으면 인자를 받지 않고 즉시 실행되는 함수가 된다. 입력값을 받고 실행해야 하므로 화살표 함수 */}
-          </View>
-          <View style={styles.button}>
-            <Button title="Cancel" />
-          </View>
+          <Pressable style={styles.button} onPress={props.onCancel}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Pressable>
+
+          <Pressable style={styles.button} onPress={addGoalHandler}>
+            <Text style={styles.buttonText}>Add Goal</Text>
+          </Pressable>
         </View>
       </View>
     </Modal>
@@ -50,25 +66,44 @@ const styles = StyleSheet.create({
     padding: 16,
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
-    marginBottom: 24,
+    backgroundColor: "#92cace",
+  },
+
+  image: {
+    width: 100,
+    height: 100,
+    margin: 20,
   },
 
   textInput: {
     width: "100%",
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
+    borderColor: "#fff",
+    borderRadius: 100,
+    padding: 16,
+    color: "#fff",
+    backgroundColor: "#bfe0e2",
   },
 
   buttonContainer: {
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 16,
   },
 
   button: {
     width: 100,
+    justifyContent: "center",
+    alignItems: "center",
     marginHorizontal: 8,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: "#ffffff",
+    borderRadius: 100,
+  },
+
+  buttonText: {
+    color: "#fff",
   },
 });
